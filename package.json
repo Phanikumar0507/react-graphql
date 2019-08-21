@@ -1,16 +1,29 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "eog-react-visualization-base",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.3.2",
-    "pondjs": "^0.8.8",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.0",
-    "react-scripts": "3.1.1",
+    "@material-ui/core": "^4.0.2",
+    "@material-ui/icons": "^4.0.1",
+    "graphql": "^14.3.1",
+    "isomorphic-fetch": "^2.2.1",
+    "keyboardjs": "^2.5.1",
+    "lodash": "^4.17.15",
+    "pondjs": "^0.8.10",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-https-redirect": "^1.1.0",
+    "react-redux": "^7.1.0-rc.1",
+    "react-scripts": "3.0.1",
     "react-select": "^3.0.4",
-    "react-timeseries-charts": "^0.16.1"
+    "react-timeseries-charts": "^0.16.1",
+    "react-toastify": "^4.4.0",
+    "react-use": "10.7.0",
+    "rebound": "^0.1.0",
+    "redux": "^4.0.1",
+    "redux-saga": "^1.0.3",
+    "subscriptions-transport-ws": "^0.9.16",
+    "urql": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,16 +34,13 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.5"
   }
 }
