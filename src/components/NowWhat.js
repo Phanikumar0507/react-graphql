@@ -22,13 +22,14 @@ import {
     ChartRow,
     YAxis,
     LineChart,
-    Resizable
+    Resizable,
+    styler
 } from "react-timeseries-charts";
 
 import MetricSelection from './Selection';
 
-let calcThirtyMinutesAgo = () => new Date() - 30 * 60 * 1000;
-let thirtyMinutesAgo = calcThirtyMinutesAgo();
+const calcThirtyMinutesAgo = () => new Date() - 30 * 60 * 1000;
+const thirtyMinutesAgo = calcThirtyMinutesAgo();
 let points = [];
 let objLabel = [];
 const query = `query($input: [MeasurementQuery]) {
@@ -44,6 +45,14 @@ const query = `query($input: [MeasurementQuery]) {
 }`;
 
 let chartObj = [];
+const colors = [
+    "#00580d",
+    "#C70039",
+    "#FF5733",
+    "#fef6ff",
+    "#900C3F",
+    "#f70028"
+];
 const useStyles = makeStyles({
     wrapper: {
         height: "100vh"
@@ -61,7 +70,7 @@ const useStyles = makeStyles({
         width: "40%"
     },
     card: {
-        width: "40%",
+        width: "15%",
         marginRight: "1rem",
         marginBottom: "1rem",
         float: "right"
@@ -207,8 +216,6 @@ class RenderChart extends React.Component {
                     minTime,
                     minValue
                 });
-
-                console.log(":::::::::::::::::finalTemp ", finalTemp);
             });
         });
         const series = new TimeSeries({
@@ -226,11 +233,53 @@ class RenderChart extends React.Component {
         return (
             <Grid container direction="column">
                 <Resizable>
-                    <ChartContainer title="Tube Pressure" titleStyle={{fill: "#555", fontWeight: 500}} timeRange={series.range()} format="%b '%y" timeAxisTickCount={5}>
-                        <ChartRow trackerShowTime={true} trackerInfoHeight={10 + [].length * 16} trackerInfoWidth={140} height="300">
-                            <YAxis id="price" label="Oil Pressure" min={series.min()} max={series.max()} width="60" type="linear"/>
+                    <ChartContainer titleStyle={{fill: "#555", fontWeight: 500}}
+                                    timeRange={series.range()} format="%b '%y" timeAxisTickCount={5}>
+                        <ChartRow trackerShowTime={true}
+                                  trackerInfoHeight={10 + [].length * 16}
+                                  trackerInfoWidth={140}
+                                  height="300">
+                            {
+                                finalTemp.map((obj, i) => {
+                                    console.log("::::obj.timeStamp", obj.timeStamp)
+                                    console.log("::::obj.metric", obj.metric[0])
+                                    let series = new TimeSeries({
+                                        name: "Value - Serious",
+                                        columns: ["time", "value"],
+                                        points: obj.timeStamp
+                                    });
+                                    return (
+                                        <YAxis id={obj.metric[0]}
+                                               key={i}
+                                               label={obj.metric[0]}
+                                               min={series.min()}
+                                               max={series.max()}
+                                               width="60"
+                                               type="linear"
+                                        />
+                                    )
+                                })
+                            }
                             <Charts>
-                                <LineChart key={0} column={["value"]} axis="price" series={series} style={style}/>
+                                {
+                                    finalTemp.map((obj, i) => {
+                                        const style = styler(
+                                            finalTemp.map(s => ({
+                                                key: "value",
+                                                color: colors[i],
+                                                selected: "#2CB1CF"
+                                            })));
+                                        let series = new TimeSeries({
+                                            name: "Value - Serious",
+                                            columns: ["time", "value"],
+                                            points: obj.timeStamp
+                                        });
+                                        return (
+                                            <LineChart key={i} column={["value"]} axis={obj.metric[0]} series={series}
+                                                       style={style}/>
+                                        )
+                                    })
+                                }
                             </Charts>
                         </ChartRow>
                     </ChartContainer>
